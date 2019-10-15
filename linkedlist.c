@@ -1,396 +1,110 @@
 #include<stdio.h>
-#include<malloc.h>
+#include<stdlib.h>
 struct node
 {
-	int data;
-	struct node *next;
+  int data;
+  struct node *next;
 };
-struct node *start = NULL;
-struct node *create_ll(struct node *);
-struct node *display(struct node *);
-struct node *insert_beg(struct node *);
-struct node *insert_end(struct node *);
-struct node *insert_before(struct node *);
-struct node *insert_after(struct node *);
-struct node *del_beg(struct node *);
-struct node *del_end(struct node *);
-struct node *del_node(struct node *);
-struct node *del_after(struct node *);
-struct node *del_list(struct node *);
-struct node *sort_list(struct node *);
-
-int main()
+void display(struct node* head)
 {
-	int option;
-	do{
-		printf("\n MAIN MENU");
-		printf("\n 1:  create linked list");
-		printf("\n 2:  Display linked list");
-		printf("\n 3:  Add a node at beggining");
-		printf("\n 4:  Add a node at END");
-		printf("\n 5:  Add a node before a given node");
-		printf("\n 6:  Add a node after a given node");
-		printf("\n 7:  delete a node from beggining");
-		printf("\n 8:  Delete a node at END");
-		printf("\n 9:  Deletet a given node");
-		printf("\n 10:  Delete a node after a given node");
-		printf("\n 11:  Delete linked list");
-		printf("\n 12:  Sort Linked List");
-		printf("\n 13:  EXIT");
-		printf("\n Enter your option");
-		scanf("%d",&option);
-		switch(option)
-		{
-			case 1 : start = create_ll(start);
-				printf("\n\n Linked List created");
-				break;
-			case 2 : start = display(start);
-				break;	
-			case 3 : start = insert_beg(start);
-				break;
-			case 4 : start = insert_end(start);
-				break;
-
-			case 5 : start = insert_before(start);
-				break;
-
-			case 6 : start = insert_after(start);
-				break;
-
-			case 7 : start = del_beg(start);
-				break;
-
-			case 8 : start = del_end(start);
-				break;
-
-			case 9 : start = del_node(start);
-				break;
-
-			case 10 : start = del_after(start);
-				break;
-
-			case 11 : start = del_list(start);
-				printf("\n\n Link list deleted");
-				break;
-
-			case 12 : start = sort_list(start);
-				break;
-
-			}
-	}while(option!=13);
-	return 0 ;
-
+      struct node *temp = head;
+      printf("\n\nList elements are - \n");
+      while(temp != NULL)
+      {
+   printf("%d --->",temp->data);
+   temp = temp->next;
+      }
 }
-struct node *create_ll(struct node *start)
-{
-	struct node *new_node,*ptr;
-	int num;
-	printf("\n Enter -1 to end");
-	printf("\n Enter the data");
-	scanf("%d",&num);
-	while(num != -1)
-	{
-		new_node=(struct node*)malloc(sizeof(struct node));
-		new_node->data= num;
-		if(start==NULL)
-		{
-			new_node->next=NULL;
-			start= new_node;
-		}
-		else
-		{
-			ptr=start;
-			while(ptr->next != NULL)
-			ptr=ptr->next;
-			ptr->next=new_node;
-			new_node->next= NULL;
-		}	
-		printf("\n\n Enter the data:");
-		scanf("%d",&num);	
-
-	}
-	return start;
-
+void insertAtMiddle(struct node *head, int position, int value) {
+    struct node *temp = head;
+    struct node *newNode;
+    newNode = malloc(sizeof(struct node));
+    newNode->data = value;
+    
+    int i;
+    for(i=2; inext != NULL) {
+        temp = temp->next;
+        }
+    }
+    newNode->next = temp->next;
+    temp->next = newNode;
 }
-struct node *display(struct node *start)
-{
-	struct node *ptr;
-	ptr = start;
-	while(ptr->next != NULL)
-	{
-		printf("\t %d",ptr->data);
-		ptr=ptr->next;
-	}
-	return start;
-
+void insertAtFront(struct node** headRef, int value) {
+    struct node* head = *headRef;
+    
+    struct node *newNode;
+    newNode = malloc(sizeof(struct node));
+    newNode->data = value;
+    newNode->next = head;
+    head = newNode;
+    
+    *headRef = head;
 }
-struct node *insert_beg(struct node *start)
-{
-	struct node *new_node ;
-	int num;
-	printf("\n Enter the data");
-	scanf("%d",&num);
-	new_node=(struct node *)malloc(sizeof(struct node));
-	new_node->data=num;
-	new_node->next=start;
-	start=new_node;
-	return start;
+void insertAtEnd(struct node* head, int value){
+    struct node *newNode;
+    newNode = malloc(sizeof(struct node));
+    newNode->data = value;
+    newNode->next = NULL;
+    
+    struct node *temp = head;
+    while(temp->next != NULL){
+      temp = temp->next;
+    }
+    temp->next = newNode;
 }
-struct node *insert_before(struct node *start)
-{
-	struct node *new_node,*ptr,*preptr;
-	int num,val;
-	printf("\n\n Enter the data");
-	scanf("%d",&num);
-	printf("\n\n Enter the value before the value has to be inserte");
-	scanf("%d",&val);
-	new_node=(struct node *)malloc(sizeof(struct node));
-	new_node->data=num;
-	ptr=start;
-	while(ptr->data != val)
-	{
-			
-		preptr=ptr;
-		ptr=ptr->next;
-	}
-	preptr->next=new_node;
-	new_node->next=ptr;
-	return start;
+void deleteFromFront(struct node** headRef){
+    struct node* head =  *headRef;
+    head = head->next;
+    *headRef = head;
 }
-
-struct node *insert_after(struct node *start)
-{
-	struct node *new_node,*ptr,*preptr;
-	int num,val;
-	printf("\n\n Enter the data");
-	scanf("%d",&num);
-	printf("\n\n Enter the value after the value has to be inserte");
-	scanf("%d",&val);
-	new_node=(struct node *)malloc(sizeof(struct node));
-	new_node->data=num;
-	ptr=start;
-	while(preptr->data != val)
-	{
-			
-		preptr=ptr;
-		ptr=ptr->next;
-	}
-	preptr->next=new_node;
-	new_node->next=ptr;
-	return start;
+void deleteFromEnd(struct node* head){
+    struct node* temp = head;
+    while(temp->next->next!=NULL){
+      temp = temp->next;
+    }
+    temp->next = NULL;
 }
-struct node *insert_end(struct node *start)
-{
-	struct node *new_node,*ptr;
-	int num;
-	printf("\n\n Enter th data");
-	scanf("%d",&num);
-	new_node=(struct node *)malloc(sizeof(struct node));
-	new_node->data=num;
-	new_node->next=NULL;
-	ptr=start;
-	while(ptr->next != NULL)
-	{
-		ptr=ptr->next;
-	}
-	ptr-> next = new_node;
-	new_node->next = NULL;
-	return start;	
+void deleteFromMiddle(struct node* head, int position){
+    struct node* temp = head;
+    int i;
+    for(i=2; inext != NULL) {
+    temp = temp->next;
+    }
 }
-struct node *del_beg(struct node *start)
-{
-	struct node *ptr;
-	ptr = start;
-	start=start->next;
-	free(ptr);
-	return start;
+temp->next = temp->next->next;
 }
-struct node *del_end(struct node *start)
-{
-	struct node *ptr,*preptr;
-	ptr=start;
-	while(ptr->next != NULL)
-	{
-	preptr=ptr;
-	ptr=ptr->next;	
-	}
-	preptr->next=ptr->next;
-	free(ptr);
-	return start;
-	
+int main() {
+  /* Initialize nodes */
+  struct node *head;
+  struct node *one = NULL;
+  struct node *two = NULL;
+  struct node *three = NULL;
+  /* Allocate memory */
+  one = malloc(sizeof(struct node));
+  two = malloc(sizeof(struct node));
+  three = malloc(sizeof(struct node));
+  /* Assign data values */
+  one->data = 1;
+  two->data = 2;
+  three->data = 3;
+  /* Connect nodes */
+  one->next = two;
+  two->next = three;
+  three->next = NULL;
+  /* Save address of first node in head */
+  head = one;
+  display(head); // 1 --->2 --->3 --->     
+  insertAtFront(&head, 4);
+  display(head); // 4 --->1 --->2 --->3 --->     
+  deleteFromFront(&head);
+  display(head); // 1 --->2 --->3 ---> 
+  insertAtEnd(head, 5);
+  display(head); // 1 --->2 --->3 --->5 --->   
+  deleteFromEnd(head);
+  display(head); // 1 --->2 --->3 --->       
+  int position = 3;
+  insertAtMiddle(head, position, 10);
+  display(head); // 1 --->2 --->10 --->3 --->      
+  deleteFromMiddle(head, position);
+  display(head); // 1 --->2 --->3 --->     
 }
-struct node *del_node(struct node *start)
-{
-	struct node *ptr, *preptr;
-	int val;
-	printf("\n\n Enter the value of node you want to delete");
-	scanf("%d",&val);
-	ptr= start;
-	if(ptr->data == val)
-	{
-		start= del_beg(start);
-		return start;
-	
-	}
-	else{	
-	while(ptr->data != val)
-	{	
-		preptr= ptr;
-		ptr=ptr->next;
-	}
-	preptr->next=ptr->next;
-	free(ptr);
-	return start;
-	}
-}
-struct node *del_after(struct node *start)
-{
-	struct node *ptr,*preptr;
-	int val;
-	printf("\n\n Enter the value after which you have to del node");
-	scanf("%d",&val);
-	ptr=start;
-	while(ptr->data != val)
-	{	
-		preptr = ptr;
-		ptr = ptr->next;
-	}
-	preptr->next=ptr->next;
-	free(ptr);
-	return start;
-
-}
-struct node *del_list(struct node *start)
-{
-	struct node *ptr ;
-	if(start != NULL)
-	{
-		ptr = start;
-		while(ptr != NULL)
-		{
-			printf("\n\n %d is to be deleted next",ptr->data);
-			start= del_beg(ptr);
-			ptr=start;
-		}
-	}
-	return start;
-}
-struct node *sort_list(struct node *start)
-{
-	struct node *ptr1 ,*ptr2;
-	int temp ;
-	ptr1 = start;
-	while(ptr1-> next != NULL)
-	{
-		ptr2 = ptr1->next;
-		while(ptr2 != NULL)
-		{
-			if(ptr1->data > ptr2->data)
-			{
-				temp = ptr1->data;
-				ptr1->data = ptr2->data;
-				ptr2->data=temp;
-			}ptr2 = ptr2->next;
-		}
-		ptr1 = ptr1->next;
-	}	
-	return start;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
