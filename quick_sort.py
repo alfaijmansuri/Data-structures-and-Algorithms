@@ -4,7 +4,7 @@ def quick_sort(ARRAY):
     comparable items inside
     :return: the same collection ordered by ascending
     Examples:
-    >>> quick_sort([0, 5, 3, 2, 2])
+    >>> quick_sort([0, 5, 3, 4,10])
     [0, 2, 2, 3, 5]
     >>> quick_sort([])
     []
